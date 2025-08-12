@@ -1,1 +1,132 @@
 
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Firma</title>
+  <!-- Fuente Arimo desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Arimo", sans-serif;
+      padding: 20px;
+    }
+    input {
+      margin-bottom: 10px;
+      width: 300px;
+      font-family: "Arimo", sans-serif;
+    }
+    button {
+      font-family: "Arimo", sans-serif;
+    }
+    .firma-preview {
+      margin-top: 30px;
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+      font-family: "Arimo", sans-serif;
+    }
+    textarea {
+      font-family: "Arimo", sans-serif;
+    }
+    /* Ocultar el bloque de código HTML */
+    #output {
+      display: none;
+    }
+    #copiarFirma {
+  margin-top: 20px;  /* Agrega un margen superior al botón */
+}
+
+  </style>
+</head>
+<body>
+
+  <h2>Generador de Firma Empresarial</h2>
+
+  <form id="firmaForm">
+    <label>Nombre:<br><input type="text" id="nombre" required></label><br>
+    <label>Apellido:<br><input type="text" id="apellido" required></label><br>
+    <label>Puesto/Sector:<br><input type="text" id="puesto" required></label><br>
+    <label>Teléfono:<br><input type="text" id="telefono" required></label><br>
+    <label>Email:<br><input type="email" id="email" required></label><br>
+    <label>Dirección:<br><input type="text" id="direccion" required></label><br>
+    <button type="submit">Generar Firma</button>
+  </form>
+
+  <div class="firma-preview" id="previewContainer" style="display:none;">
+    <h3>Vista previa de la firma:</h3>
+    <div id="firmaVisual"></div>
+    <textarea id="output" rows="15" cols="100" readonly></textarea>
+
+    <!-- Botón Copiar Firma -->
+    
+    <button id="copiarFirma" onclick="copiarFirma()">Copiar Firma</button>
+  </div>
+
+  <script>
+    document.getElementById('firmaForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const apellido = document.getElementById('apellido').value.trim();
+      const puesto = document.getElementById('puesto').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const direccion = document.getElementById('direccion').value.trim();  // Dirección del formulario
+
+      const firmaHTML = `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Arimo', sans-serif; color: #a31c35;">
+  <tr>
+    <!-- Logo -->
+    <td style="padding-right: 20px; padding-left: 20px">
+      <img src="https://www.stopcar.com.ar/images/FirmaNueva.png" alt="Logo" width="150" style="display: block;">
+    </td>
+
+    <!-- Datos -->
+    <td style="padding: 10px 0px;">
+      <div style="font-size: 16px; font-weight: bold; color: #a31c35;">${nombre} ${apellido}</div>
+      <div style="font-size: 12px; margin-top: 10px; line-height: 16px;font-weight: bold;font-style:italic;">${puesto}</div>
+      <div style="font-size: 12px; line-height: 16px;">
+        <a href="tel:+54${telefono}" style="color: #a31c35;font-weight: bold; text-decoration: none;">${telefono}</a>
+      </div>
+      <div style="font-size: 12px; line-height: 16px;">
+        <a href="mailto:${email}" style="color: #a31c35; text-decoration: none;">${email}</a>
+      </div>
+      <div style="font-size: 12px; line-height: 16px;">
+        <a href="https://www.stopcar.com.ar" style="color: #a31c35; text-decoration: none;">www.stopcar.com.ar</a>
+      </div>
+      <div style="font-size: 12px;line-height: 16px;">${direccion}</div>  <!-- Dirección -->
+    </td>
+  </tr>
+</table>`;
+
+      // Mostrar la vista previa de la firma
+      document.getElementById('firmaVisual').innerHTML = firmaHTML;
+      document.getElementById('output').value = firmaHTML;
+      document.getElementById('previewContainer').style.display = 'block';
+    });
+
+    // Función para copiar la firma visual al portapapeles
+    function copiarFirma() {
+      const firmaVisual = document.getElementById('firmaVisual');  // Contenido de la firma visual
+      const range = document.createRange();
+      range.selectNode(firmaVisual);
+      window.getSelection().removeAllRanges();  // Limpiar cualquier selección previa
+      window.getSelection().addRange(range);  // Seleccionar el contenido de la firma
+
+      try {
+        // Copiar al portapapeles
+        document.execCommand('copy');
+        alert("Firma copiada!");
+      } catch (err) {
+        console.error('Error al copiar al portapapeles', err);
+      }
+
+      // Limpiar la selección después de copiar
+      window.getSelection().removeAllRanges();
+    }
+  </script>
+
+</body>
+</html>
