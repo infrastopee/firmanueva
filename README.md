@@ -37,7 +37,7 @@
   <form id="firmaForm">
     <label>Nombre y Apellido:<br><input type="text" id="nombre" required></label><br>
     <label>Puesto/Sector:<br><input type="text" id="puesto" required></label><br>
-    <label>Teléfono:<br><input type="text" id="telefono" required></label><br>
+    <label>Teléfono:<br><input type="text" id="telefono"></label><br>
     <label>Email:<br><input type="text" id="email" required>@stopcar.com.ar</label><br>
     <label>Sede:<br></label>
         <select name="sede" id="sede">
