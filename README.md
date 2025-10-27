@@ -2,7 +2,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Generador de Stopcar</title>
-  <!-- Fuente Arimo desde Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
@@ -12,19 +11,19 @@
       font-family: "Arimo", sans-serif;
       padding: 20px;
     }
-    input {
+    input, select {
       margin-bottom: 10px;
       width: 300px;
       font-family: "Arimo", sans-serif;
     }
     button {
       font-family: "Arimo", sans-serif;
+      cursor: pointer;
     }
     .firma-preview {
       margin-top: 30px;
       border-top: 1px solid #ccc;
       padding-top: 20px;
-      font-family: "Arimo", sans-serif;
     }
     textarea {
       font-family: "Arimo", sans-serif;
@@ -53,7 +52,13 @@
   <div class="firma-preview" id="previewContainer" style="display:none;">
     <h3>Vista previa de la firma:</h3>
     <div id="firmaVisual"></div>
-    <textarea id="output" rows="10" cols="80" style="margin-top: 20px;"></textarea>
+
+    <div style="margin-top: 15px;">
+      <button id="copyButton" onclick="copiarFirma()">Copiar firma</button>
+    </div>
+
+    <textarea id="output" rows="10" cols="80" style="margin-top: 20px; display:none;"></textarea>
+  </div>
 
   <script>
     document.getElementById('firmaForm').addEventListener('submit', function(e) {
@@ -68,12 +73,9 @@
       const firmaHTML = `
 <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Arimo', sans-serif; color: #a31c35;">
   <tr>
-    <!-- Logo -->
     <td style="padding-right: 20px; padding-left: 20px">
       <img src="https://www.stopcar.com.ar/images/FirmaNueva.png" alt="Logo" width="150" style="display: block;">
     </td>
-
-    <!-- Datos -->
     <td style="padding: 10px 0px;">
       <div style="font-size: 16px; font-weight: bold; color: #a31c35;">${nombre}</div>
       <div style="font-size: 12px; margin-top: 10px; line-height: 16px;font-weight: bold;font-style:italic;">${puesto}</div>
@@ -96,6 +98,25 @@
       document.getElementById('output').value = firmaHTML;
       document.getElementById('previewContainer').style.display = 'block';
     });
+
+    // ✅ Copiar la vista previa HTML con formato
+    async function copiarFirma() {
+      const firmaDiv = document.getElementById('firmaVisual');
+      const html = firmaDiv.innerHTML;
+
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "text/html": new Blob([html], { type: "text/html" }),
+            "text/plain": new Blob([firmaDiv.innerText], { type: "text/plain" })
+          })
+        ]);
+        alert("✅ Firma copiada.");
+      } catch (err) {
+        console.error("Error al copiar: ", err);
+        alert("❌ No se pudo copiar la firma.");
+      }
+    }
   </script>
 
 </body>
